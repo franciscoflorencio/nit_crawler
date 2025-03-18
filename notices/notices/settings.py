@@ -19,6 +19,22 @@ NEWSPIDER_MODULE = "notices.spiders"
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
 
+SPLASH_URL = "http://localhost:8050"
+
+DOWNLOADER_MIDDLEWARES = {
+    "scrapy_splash.SplashCookiesMiddleware": 723,
+    "scrapy_splash.SplashMiddleware": 725,
+    "scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware": 810,
+}
+
+SPIDER_MIDDLEWARES = {
+    "scrapy_splash.SplashDeduplicateArgsMiddleware": 100,
+}
+
+REQUEST_FINGERPRINTER_CLASS = 'scrapy_splash.SplashRequestFingerprinter'
+
+DUPEFILTER_CLASS = 'scrapy_splash.SplashAwareDupeFilter'
+
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
 
@@ -62,9 +78,11 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    "notices.pipelines.NoticesPipeline": 300,
-#}
+ITEM_PIPELINES = {
+   "notices.pipelines.NoticesPipeline": 300,
+    'notices.pipelines.CnpqPipeline': 300,
+
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
